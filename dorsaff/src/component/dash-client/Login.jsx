@@ -1,46 +1,46 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import "../../CSS/Login.css";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 function Login({ socket }) {
-  const [register, setRegister] = useState({ name: "", role: "", email: "", password: "" });
-  const [login, setLogin] = useState({ email: "", password: "" });
+  const [registerError, setRegisterError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
   const navigate = useNavigate();
 
-  const loginSubmit = async (e) => {
-    e.preventDefault();
-    console.log(login);
-    try {
-      const res = await axios.post("http://localhost:5000/user/login", login);
-      console.log(res.data);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
-      // Assuming the response includes user details
+  const loginSubmit = async (data) => {
+    try {
+      const res = await axios.post("http://localhost:5000/user/login", data);
       const { accesstoken, user } = res.data;
 
       Cookies.set("token", accesstoken);
       localStorage.setItem("userName", user.name);
       localStorage.setItem("userId", user._id);
 
-      // Emit the newUser event with user details and socket ID
       socket.emit("newUser", { userName: user.name, userId: user._id, socketID: socket.id });
 
-      // Redirect to home or any other page
-      window.location.href = "/Dashboard"
+      window.location.href = "/Dashboard";
     } catch (error) {
-      console.log(error);
+      setLoginError("Login failed. Please check your credentials.");
     }
   };
 
-  const registerSubmit = async (e) => {
-    e.preventDefault();
-    console.log(register);
+  const registerSubmit = async (data) => {
     try {
-      const res = await axios.post("http://localhost:5000/user/register", register);
+      const res = await axios.post("http://localhost:5000/user/register", data);
       console.log(res.data);
+      reset(); // Reset the form on successful registration
     } catch (error) {
-      console.log(error);
+      setRegisterError("Registration failed. Please try again.");
     }
   };
 
@@ -50,68 +50,84 @@ function Login({ socket }) {
         <input type="checkbox" id="chk" aria-hidden="true" />
 
         <div className="signup">
-          <form onSubmit={registerSubmit}>
+          <form onSubmit={handleSubmit(registerSubmit)}>
             <label className="label" htmlFor="chk" aria-hidden="true">
               Sign up
             </label>
             <input
               className="input"
               type="text"
-              name="txt"
-              placeholder="nom"
-              required=""
-              onChange={e => setRegister({ ...register, name: e.target.value })}
+              placeholder="Name"
+              {...register("name", { required: "Name is required" })}
             />
+            {errors.name && <p className="error">{errors.name.message}</p>}
+<br/>
             <input
               className="input"
-              type="role"
-              name="role"
-              placeholder="role"
-              required=""
-              onChange={e => setRegister({ ...register, role: e.target.value })}
-            />
-            <input
               type="text"
-              name="email"
-              placeholder="email"
-              required=""
-              className="input"
-              onChange={e => setRegister({ ...register, email: e.target.value })}
+              placeholder="Role"
+              {...register("role", { required: "Role is required" })}
             />
+            {errors.role && <p className="error">{errors.role.message}</p>}
+            <br/>
             <input
-              type="password"
-              name="pswd"
-              placeholder="Password"
-              required=""
               className="input"
-              onChange={e => setRegister({ ...register, password: e.target.value })}
+              type="email"
+              placeholder="Email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                  message: "Invalid email format",
+                },
+              })}
             />
+            {errors.email && <p className="error">{errors.email.message}</p>}
+            <br/>
+            <input
+              className="input"
+              type="password"
+              placeholder="Password"
+              {...register("password", { required: "Password is required" })}
+            />
+            {errors.password && <p className="error">{errors.password.message}</p>}
+
             <button type="submit" className="button">Sign up</button>
+
+            {registerError && <p className="error">{registerError}</p>}
           </form>
         </div>
 
         <div className="login">
-          <form onSubmit={loginSubmit}>
+          <form onSubmit={handleSubmit(loginSubmit)}>
             <label className="label" htmlFor="chk" aria-hidden="true">
               Login
             </label>
             <input
               className="input"
               type="email"
-              name="email"
               placeholder="Email"
-              required=""
-              onChange={e => setLogin({ ...login, email: e.target.value })}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^@ ]+@[^@ ]+\.[^@ .]{2,}$/,
+                  message: "Invalid email format",
+                },
+              })}
             />
+            {errors.email && <p className="error">{errors.email.message}</p>}
+            <br/>
             <input
               className="input"
               type="password"
-              name="pswd"
               placeholder="Password"
-              required=""
-              onChange={e => setLogin({ ...login, password: e.target.value })}
+              {...register("password", { required: "Password is required" })}
             />
+            {errors.password && <p className="error">{errors.password.message}</p>}
+
             <button type="submit" className="button">Login</button>
+
+            {loginError && <p className="error">{loginError}</p>}
           </form>
         </div>
       </div>

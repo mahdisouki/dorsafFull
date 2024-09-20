@@ -55,3 +55,28 @@
 #sidebarrr .navv a i {
   margin-right: 10px;
 }
+.logout-section {
+  margin-top: auto; /* Pushes the button to the bottom */
+  padding: 20px;
+  text-align: center;
+}
+
+.logout-button {
+  background-color: #ff4d4f;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 100%;
+}
+
+.logout-button i {
+  margin-right: 8px;
+}
+
+.logout-button:hover {
+  background-color: #d43535;
+}

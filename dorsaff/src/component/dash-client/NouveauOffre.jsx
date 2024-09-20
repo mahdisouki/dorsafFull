@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../../CSS/NouveauOffre.css';
 import axios from 'axios';
 import Cookies from "js-cookie"
+import Map from './Map';
 const NouveauOffre = () => {
   const [data , setData] = useState({});
   const [title, setTitle] = useState('');
@@ -53,14 +54,7 @@ const NouveauOffre = () => {
           <input className="inpt-info-g"  type="text" value={offer.adresse} onChange={(e) =>setOffer({...offer , adresse:e.target.value})} />
         </label>
         <div className="right-accueil">
-          <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104888.664870107!2d10.65052600104041!3d34.761366629741254!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x13002cda1486c695%3A0x22dfe0a62c50ce6f!2sSfax!5e0!3m2!1sfr!2stn!4v1717066623257!5m2!1sfr!2stn"
-            width="100%"
-            height="100%"
-            allowfullscreen=""
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-          ></iframe>
+    <Map/>
         </div>
         <label className="lbl-info-g">
           type:

@@ -12,7 +12,6 @@
 .main{
 	width: 350px;
 	height: 500px;
-	background: red;
 	overflow: hidden;
 	background: url("https://doc-08-2c-docs.googleusercontent.com/docs/securesc/68c90smiglihng9534mvqmq1946dmis5/fo0picsp1nhiucmc0l25s29respgpr4j/1631524275000/03522360960922298374/03522360960922298374/1Sx0jhdpEpnNIydS4rnN4kHSJtU1EyWka?e=view&authuser=0&nonce=gcrocepgbb17m&user=03522360960922298374&hash=tfhgbs86ka6divo3llbvp93mg4csvb38") no-repeat center/ cover;
 	border-radius: 10px;
@@ -25,6 +24,7 @@
 	position: relative;
 	width:100%;
 	height: 100%;
+	background-color: #276272;
 }
 .label{
 	color: #fff;
@@ -42,7 +42,7 @@
 	background: #e0dede;
 	justify-content: center;
 	display: flex;
-	margin: 20px auto;
+	margin: auto;
 	padding: 12px;
 	border: none;
 	outline: none;
@@ -70,9 +70,9 @@
 }
 .login{
 	height: 460px;
-	background: #eee;
+	background: #ffffff;
 	border-radius: 60% / 10%;
-	transform: translateY(-180px);
+	transform: translateY(-170px);
 	transition: .8s ease-in-out;
 }
 .login label{
@@ -88,4 +88,9 @@
 }
 #chk:checked ~ .signup label{
 	transform: scale(.6);
+}
+.error{
+	color: red;
+text-align: center;
+font-weight: 500;
 }

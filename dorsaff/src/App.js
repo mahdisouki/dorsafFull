@@ -27,7 +27,7 @@ const App = () => {
   return (
     <Router>
       <div>
-       {token?(
+       {!token?(
         <>
         <Sidebar />
         <NavBar />

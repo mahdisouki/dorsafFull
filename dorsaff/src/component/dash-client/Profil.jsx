@@ -1,36 +1,155 @@
-import React from "react";
+
+import React, { useState } from "react";
 import "../../CSS/Profil.css";
 import Footer from "./Footer";
 
 function Profil() {
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    nom: "",
+    prenom: "",
+    telephone: "",
+    adresse: "",
+  });
+
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Open modal
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
+  // Clear form fields
+  const handleReset = () => {
+    setFormData({
+      nom: "",
+      prenom: "",
+      telephone: "",
+      adresse: "",
+    });
+  };
+
+  // Submit updated information
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Updated info:", formData);
+    closeModal();
+  };
+
+
   return (
     <>
       <div className="app-c">
       <div className="profile-form">
-        <div className="prof-for">
-          <div className="profile-header">
-            <img src="logo2.png" alt="Profile" className="profile-pic" />
-            <div className="profile-info">
-              <div className="info-group">
-                <label className="lbl-info-g">Nom :</label>
-                <input type="text" className="inpt-info-g" placeholder="" />
+      <div className="prof-for">
+            <div className="profile-header">
+              <img src="logo2.png" alt="Profile" className="profile-pic" />
+              <div className="profile-info">
+                <div className="info-group">
+                  <label className="lbl-info-g">Nom :</label>
+                  <input
+                    type="text"
+                    className="inpt-info-g"
+                    placeholder={formData.nom || "Nom"}
+                    disabled
+                  />
+                </div>
+                <div className="info-group">
+                  <label className="lbl-info-g">Prénom :</label>
+                  <input
+                    type="text"
+                    className="inpt-info-g"
+                    placeholder={formData.prenom || "Prénom"}
+                    disabled
+                  />
+                </div>
+                <div className="info-group">
+                  <label className="lbl-info-g">Téléphone:</label>
+                  <input
+                    type="text"
+                    className="inpt-info-g"
+                    placeholder={formData.telephone || "Téléphone"}
+                    disabled
+                  />
+                </div>
+                <div className="info-group">
+                  <label className="lbl-info-g">Adresse :</label>
+                  <input
+                    type="text"
+                    className="inpt-info-g"
+                    placeholder={formData.adresse || "Adresse"}
+                    disabled
+                  />
+                </div>
+                <button className="consult1-button" onClick={openModal}>
+                  Modifier
+                </button>
               </div>
-              <div className="info-group">
-                <label className="lbl-info-g">Prénom:</label>
-                <input type="text" className="inpt-info-g" placeholder="" />
-              </div>
-              <div className="info-group">
-                <label className="lbl-info-g">Télephone:</label>
-                <input type="text" className="inpt-info-g" placeholder="" />
-              </div>
-              <div className="info-group">
-                <label className="lbl-info-g">Adresse:</label>
-                <input type="text" className="inpt-info-g" placeholder="" />
-              </div>
-              <button className="consult1-button">Modifier</button>
             </div>
           </div>
-        </div>
+        {isModalOpen && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h4>Modifier Informations</h4>
+              <form onSubmit={handleSubmit}>
+                <div className="modal-form-group">
+                  <label>Nom :</label>
+                  <input
+                    type="text"
+                    name="nom"
+                    value={formData.nom}
+                    onChange={handleInputChange}
+                    placeholder="Nom"
+                  />
+                </div>
+                <div className="modal-form-group">
+                  <label>Prénom :</label>
+                  <input
+                    type="text"
+                    name="prenom"
+                    value={formData.prenom}
+                    onChange={handleInputChange}
+                    placeholder="Prénom"
+                  />
+                </div>
+                <div className="modal-form-group">
+                  <label>Téléphone :</label>
+                  <input
+                    type="text"
+                    name="telephone"
+                    value={formData.telephone}
+                    onChange={handleInputChange}
+                    placeholder="Téléphone"
+                  />
+                </div>
+                <div className="modal-form-group">
+                  <label>Adresse :</label>
+                  <input
+                    type="text"
+                    name="adresse"
+                    value={formData.adresse}
+                    onChange={handleInputChange}
+                    placeholder="Adresse"
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="button" className="modal-close-button" onClick={closeModal}>Fermer</button>
+                  <button type="submit" className="consult1-button">Enregistrer</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
+
         <div className="profile-body">
           <h4 style={{ fontWeight: "700", color: "black", padding: "2px" }}>
             Devenir un compte pro :
